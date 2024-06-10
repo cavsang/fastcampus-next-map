@@ -11,13 +11,15 @@ export default function Markers({map, storeData, setCurrentStore}:MarkersProps){
 
     const loadKakaoMarkers = useCallback(() => {
         if(map){
-            storeData?.map((data:any) => {
+            storeData?.map((data:StoreType) => {
                 const markersList = ["동남아","베이커리","복어취급","분식","술집","양식","인도_중동","일식","중국식","카페","탕류","한식"];
 
-                var markerPosition = new window.kakao.maps.LatLng(data?.y_dnts ,data?.x_cnts);
+                var markerPosition = new window.kakao.maps.LatLng(data?.lat ,data?.lng);
 
-                var img = data?.bizcnd_code_nm || 'default';
-                img = markersList.indexOf(data?.bizcnd_code_nm) > -1 ?  data?.bizcnd_code_nm : 'default';
+                var img = data?.category || 'default';
+                if(data?.category){
+                    img = markersList.indexOf(data?.category) > -1 ?  data?.category : 'default';
+                }
 
                 // 마커이미지의 주소입니다
                 var imageSrc = `/images/markers/${img}.png`,
@@ -38,7 +40,7 @@ export default function Markers({map, storeData, setCurrentStore}:MarkersProps){
                 marker.setMap(map);
 
                 //커서가 지도위에 갔을때 표시할 인포윈도우
-                var content = `<div class="infowindow">${data?.upso_nm}</div>`;
+                var content = `<div class="infowindow">${data?.name}</div>`;
                 var customOverlay = new window.kakao.maps.CustomOverlay({
                     position: markerPosition,
                     content: content,
