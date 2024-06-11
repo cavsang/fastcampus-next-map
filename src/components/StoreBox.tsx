@@ -23,7 +23,7 @@ export default function StoreBox({store, setStore}:StoreBoxProps){
                 <div className="p-8 ">
                     <div className="flex justify-between items-start ">
                         <div className="flex gap-4 items-center">
-                            <Image src={`/images/markers/${img}.png`} width={40} alt='' height={40} />
+                            <Image src={`/images/markers/${img}.png`} width={40} alt='' height={40} priority={false} />
                             <div>
                                 <div className="font-semibold ">{store?.name}</div>
                                 <div className="text-sm ">{store?.storeType}</div>
