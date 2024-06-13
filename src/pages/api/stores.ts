@@ -6,24 +6,30 @@ import {PrismaClient} from '@prisma/client';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<StoreApiResponse>,
+  res: NextApiResponse<StoreApiResponse | StoreType[]>,
 ) {
-    let {page = "1"}:{page?: string} = req.query;
+
+    let {page = ""}:{page?: string} = req.query;
     const pageSize = 10;
-
     const prisma = new PrismaClient();
-    const totalCount = await prisma.store.count();
-    const stores:StoreType[] = await prisma.store.findMany({
-      orderBy:{id: "asc"},
-      take: pageSize,
-      skip: (parseInt(page) < 1 ? 0 : (parseInt(page) -1)) * 10
-    });
 
-  res.status(200).json({
-    data: stores,
-    page: parseInt(page) < 1 ? 1 : parseInt(page),
-    totalCount :totalCount,
-    totalPage: totalCount / pageSize,
-    pageSize: pageSize
-  });
+    if(page){
+      const totalCount = await prisma.store.count();
+      const stores:StoreType[] = await prisma.store.findMany({
+        orderBy:{id: "asc"},
+        take: pageSize,
+        skip: (parseInt(page) < 1 ? 0 : (parseInt(page) -1)) * 10
+      });
+
+      res.status(200).json({
+        data: stores,
+        page: parseInt(page) < 1 ? 1 : parseInt(page),
+        totalCount :totalCount,
+        totalPage: totalCount / pageSize,
+        pageSize: pageSize
+      });
+    }else{
+      const stores:StoreType[] = await prisma.store.findMany({orderBy:{id : 'asc'}});
+      res.status(200).json(stores);
+    }
 }
