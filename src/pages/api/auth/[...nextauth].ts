@@ -18,7 +18,10 @@ export const authOptions= {
             clientId: process.env.NAVER_CLIENT_ID|| "",
             clientSecret: process.env.NAVER_CLIENT_SECRET||"yar"
         }),
-    ]
+    ],
+    pages: {//커스텀 페이지세팅
+        signIn: "/users/login"
+    }
 };
 
 export default NextAuth(authOptions);
