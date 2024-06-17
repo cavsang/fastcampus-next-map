@@ -28,17 +28,17 @@ export default function login(){
             <div className="mt-10 mx-auto w-full max-w-sm">
                 <div className="flex flex-col gap-3">
                     <button className="text-white flex gap-2 bg-[#4285F4] hover:bg-[#4285F4]/90 font-medium rounded-lg
-                    w-full px-5 py-4 text-center items-center justify-center" onClick={() => signIn('google')}>
+                    w-full px-5 py-4 text-center items-center justify-center" onClick={() => signIn('google',{callbackUrl:'/'})}>
                         <AiOutlineGoogle className="w-6 h-6"/>
                         Sign in Google
                     </button>
                     <button className="text-white flex gap-2 bg-[#2db400] hover:bg-[#2db400]/90 font-medium rounded-lg
-                    w-full px-5 py-4 text-center items-center justify-center" onClick={() => signIn('naver')}>
+                    w-full px-5 py-4 text-center items-center justify-center" onClick={() => signIn('naver',{callbackUrl:'/'})}>
                         <SiNaver/>
                         Sign in Naver
                     </button>
                     <button className="text-white flex gap-2 bg-[#fef01b] hover:bg-[#fef01b]/90 font-medium rounded-lg
-                    w-full px-5 py-4 text-center items-center justify-center text-black" onClick={() => signIn('kakao')}>
+                    w-full px-5 py-4 text-center items-center justify-center text-black" onClick={() => alert('구현안됨')}>
                         <RiKakaoTalkFill className="w-6 h-6"/>
                         Sign in Kakao
                     </button>
