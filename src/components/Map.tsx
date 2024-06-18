@@ -1,6 +1,5 @@
 /* gloal kakao (이거없어도 나오는데? 이거용도는??)*/  
 import Script from '../../node_modules/next/script';
-import Markers from './Markers';
 import { Dispatch, SetStateAction } from 'react';
 
 //typescript에서 못찾으니까 여기에 컴파일러에만 알려주는 용도. window.하는객체도 원래는 Window인가보다.
@@ -12,19 +11,27 @@ declare global{
 
 interface MapProps{
   setMap: Dispatch<SetStateAction<any>>;
+  lat?:string;
+  lng?:string;
+  zoom?:string;
 }
 
 //강남역 정도로..위도,경도.
 const DEFAULT_LAT = 37.497625203;
 const DEFAULT_LNG = 127.03088379;
+const DEFAULT_ZOOM = 3;
 
-export default function Map({setMap}:MapProps){
+export default function Map({setMap,lat,lng, zoom}:MapProps){
     const loadKakaoMap = () => {
     window.kakao.maps.load(() => {
       const mapContainer = document.getElementById("map");
       const mapOption = {
-        center: new window.kakao.maps.LatLng(DEFAULT_LAT, DEFAULT_LNG),
-        level : 3
+        center: new window.kakao.maps.LatLng
+        (
+          lat ?? DEFAULT_LAT, //??는 있으면 첫번째값 사용. 없으면 뒤에거사용.
+          lng ?? DEFAULT_LNG
+        ),
+        level : zoom ?? DEFAULT_ZOOM  
       };
       
       const map = new window.kakao.maps.Map(mapContainer, mapOption);

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import {AiOutlineClose, AiOutlineInfoCircle, AiOutlineCheck, AiOutlinePhone} from 'react-icons/ai';
 import {HiOutlineMapPin} from 'react-icons/hi2';
 import { StoreType } from "../interface/index";
+import { useRouter } from "next/router";
 
 interface StoreBoxProps{
     store: StoreType,
@@ -15,6 +16,8 @@ export default function StoreBox({store, setStore}:StoreBoxProps){
     if(store?.category){
         img = markersList.indexOf(store?.category) > -1 ?  store?.category : 'default';
     }
+
+    const router= useRouter();
 
     return <div className="fixed transition ease-in-out delay-150 inset-x-0 mx-auto bottom-20
     rounded-ls shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white">
@@ -46,7 +49,7 @@ export default function StoreBox({store, setStore}:StoreBoxProps){
                         <AiOutlineCheck /> {store?.category}
                     </div>
                 </div>
-                <button onClick={() => {window.alert('상세보기 작업중');}} 
+                <button onClick={() => {router.push(`/stores/${store.id}`)}} 
                 className="bg-blue-700 hover:bg-blue-500 focus:bg-blue-500 text-center w-full py-3 text-white 
                             font-semibole rounded-b-lg">
                                     상세보기

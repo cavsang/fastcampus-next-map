@@ -4,7 +4,7 @@ import { StoreType } from "../interface/index";
 interface MarkersProps{
     map: any;
     storeData: StoreType[],
-    setCurrentStore: Dispatch<SetStateAction<any>>;
+    setCurrentStore?: Dispatch<SetStateAction<any>>;
 }
 
 export default function Markers({map, storeData, setCurrentStore}:MarkersProps){
@@ -59,7 +59,7 @@ export default function Markers({map, storeData, setCurrentStore}:MarkersProps){
                 });
 
                 //클릭한 가게 저장.
-                window.kakao.maps.event.addListener(marker, 'click', function(){
+                !!setCurrentStore && window.kakao.maps.event.addListener(marker, 'click', function(){
                     setCurrentStore(data);
                 })
             });
