@@ -6,6 +6,7 @@ import Loading from "@/components/Loading";
 import React, { useRef, useEffect, useCallback } from "react";
 import useintersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
+import SearchFilter from "@/components/SearchFilter";
 
 
 export default function StoreListPage() {
@@ -54,6 +55,7 @@ export default function StoreListPage() {
 
     return (
         <div className="px-4 md:max-w-4xl mx-auto py-8">
+            <SearchFilter />
             <ul role="list" className="divide-y divide-gray-100">{/* 밑에줄긋는 옵션 */}
 
                 {isLoading ? <Loading /> : stores?.pages?.map((page, index) => {
