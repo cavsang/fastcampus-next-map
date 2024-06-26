@@ -3,7 +3,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { useInfiniteQuery} from 'react-query';
 import Loading from "@/components/Loading";
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import useintersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
@@ -12,20 +12,36 @@ import SearchFilter from "@/components/SearchFilter";
 export default function StoreListPage() {
     const markersList = ["동남아", "베이커리", "복어취급", "분식", "술집", "양식", "인도_중동", "일식", "중국식", "카페", "탕류", "한식"];
 
+    //검색어
+    const [q, setQ] = useState<string>(""); //input 
+    const [district, setDistrict] = useState<string>("");//selectbox
+
+    /** 이런방법이 있네..?  */
+    const searchParams = {
+        q: q,
+        district: district
+    };
+
     const fetchStores = async ({pageParam = 1}) => {
         const {data} = await axios('/api/stores', {
             params:{
                 limit: 10,
-                page: pageParam
+                page: pageParam,
+                ...searchParams,  //와 이런방법이있네??
             }
         });
         return data;
     }
 
-    const {data:stores, isFetching, fetchNextPage, isFetchingNextPage, hasNextPage, isLoading, isError}
-         = useInfiniteQuery('stores',fetchStores,{
-             getNextPageParam:(lastPage:any) => lastPage?.data?.length > 0 ? lastPage?.page + 1 : undefined
-         });
+
+    
+    const {data:stores, isFetching, fetchNextPage, isFetchingNextPage, hasNextPage, isLoading, isError} 
+    = useInfiniteQuery(['stores', searchParams],fetchStores,{
+            getNextPageParam:(lastPage:any) => {
+                const page = lastPage?.data?.length > 0 ? lastPage?.page + 1 : undefined;
+                return page;
+        },
+    });
 
     const ref = useRef<HTMLDivElement | null>(null);//ref로 그엘레먼트를 가져옴.
     const pageRef = useintersectionObserver(ref, {});
@@ -38,7 +54,7 @@ export default function StoreListPage() {
         if(res.isError){
             console.log(res.error);
         }
-    },[fetchNextPage])
+    },[fetchNextPage]);
 
     useEffect( () => {
         let timerId: NodeJS.Timeout | undefined;
@@ -50,19 +66,22 @@ export default function StoreListPage() {
         }
 
         return () => clearTimeout(timerId);
-    },[fetchNext, isPageEnd, hasNextPage])
+    },[fetchNext, isPageEnd, hasNextPage]);
+
+
+  
 
 
     return (
         <div className="px-4 md:max-w-4xl mx-auto py-8">
-            <SearchFilter />
+            <SearchFilter setDistrict={setDistrict} setQ={setQ}/>
             <ul role="list" className="divide-y divide-gray-100">{/* 밑에줄긋는 옵션 */}
 
                 {isLoading ? <Loading /> : stores?.pages?.map((page, index) => {
                     return (
                         <React.Fragment key={index}>
 
-                            {page?.data.map((store:StoreType, i:number) => {
+                            {page?.data?.map((store:StoreType, i:number) => {
                                 var img: string = store?.category || 'default';
                                 if (store?.category) {
                                     img = markersList.indexOf(store?.category) > -1 ? store?.category : 'default';
