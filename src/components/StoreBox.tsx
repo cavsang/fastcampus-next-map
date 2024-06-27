@@ -1,23 +1,23 @@
-import { Dispatch, SetStateAction } from "react";
 import Image from 'next/image';
 import {AiOutlineClose, AiOutlineInfoCircle, AiOutlineCheck, AiOutlinePhone} from 'react-icons/ai';
 import {HiOutlineMapPin} from 'react-icons/hi2';
-import { StoreType } from "../interface/index";
 import { useRouter } from "next/router";
+import {  useRecoilState } from "recoil";
+import { currentStoreState } from "@/atom";
 
-interface StoreBoxProps{
-    store: StoreType,
-    setStore: Dispatch<SetStateAction<any>>;
-}
 
-export default function StoreBox({store, setStore}:StoreBoxProps){
+export default function StoreBox(){
     const markersList = ["동남아","베이커리","복어취급","분식","술집","양식","인도_중동","일식","중국식","카페","탕류","한식"];
+    const router= useRouter();
+
+    /*--------------------  이부분.. useRecoilState*/
+    const [store, setStore] = useRecoilState(currentStoreState);
+    /*--------------------  */
+
     var img:string = store?.category || 'default';
     if(store?.category){
         img = markersList.indexOf(store?.category) > -1 ?  store?.category : 'default';
     }
-
-    const router= useRouter();
 
     return <div className="fixed transition ease-in-out delay-150 inset-x-0 mx-auto bottom-20
     rounded-ls shadow-lg max-w-sm md:max-w-xl z-10 w-full bg-white">

@@ -1,25 +1,28 @@
-import { StoreType, StoreApiResponse } from "@/interface/index";
+import { StoreType} from "@/interface/index";
 import Image from 'next/image';
 import axios from 'axios';
 import { useInfiniteQuery} from 'react-query';
 import Loading from "@/components/Loading";
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import useintersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
+import { useRecoilValue } from "recoil";
+import { searchState } from "@/atom";
+import { useRouter } from "next/router";
 
 
 export default function StoreListPage() {
     const markersList = ["동남아", "베이커리", "복어취급", "분식", "술집", "양식", "인도_중동", "일식", "중국식", "카페", "탕류", "한식"];
 
-    //검색어
-    const [q, setQ] = useState<string>(""); //input 
-    const [district, setDistrict] = useState<string>("");//selectbox
+    const router = useRouter();
+
+    const searchRecoilState = useRecoilValue(searchState);
 
     /** 이런방법이 있네..?  */
     const searchParams = {
-        q: q,
-        district: district
+        q: searchRecoilState?.q,
+        district: searchRecoilState?.district
     };
 
     const fetchStores = async ({pageParam = 1}) => {
@@ -74,7 +77,7 @@ export default function StoreListPage() {
 
     return (
         <div className="px-4 md:max-w-4xl mx-auto py-8">
-            <SearchFilter setDistrict={setDistrict} setQ={setQ}/>
+            <SearchFilter />
             <ul role="list" className="divide-y divide-gray-100">{/* 밑에줄긋는 옵션 */}
 
                 {isLoading ? <Loading /> : stores?.pages?.map((page, index) => {
@@ -88,7 +91,7 @@ export default function StoreListPage() {
                                 }
 
                                 return (
-                                    <li className="flex justify-between gap-x-y py-5" key={index}>
+                                    <li className="flex justify-between gap-x-y py-5 cursor-pointer hover:bg-gray-50" key={index} onClick={() => router.push(`/stores/${store.id}`)}>
                                         <div className="flex gap-x-4">
                                             <Image src={`/images/markers/${img}.png`} width={40} height={40} alt="아이콘 이미지" />
                                             <div>

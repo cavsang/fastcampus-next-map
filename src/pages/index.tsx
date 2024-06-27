@@ -1,20 +1,18 @@
 import Map from "../components/Map";
 import Markers from "../components/Markers";
-import { useState } from "react";
 import StoreBox from "../components/StoreBox";
 import { StoreType } from "../interface/index";
 import axios from 'axios';
 
 export default function Home({stores}:{stores : StoreType[]}) {
 
-  const [map, setMap] = useState(null);
-  const [currentStore, setCurrentStore] = useState(null); //클릭시 저장.
-
   return (
   <>
-    <Map setMap={setMap}/>
-    <Markers storeData={stores} map={map} setCurrentStore={setCurrentStore}/>
-    <StoreBox store={currentStore as any} setStore={setCurrentStore} />
+    {/* 이부분 안에 props들이 다빠졌다. 전역으로 바꿧기때문에.. */}
+    <Map/>
+    <Markers storeData={stores} />
+    <StoreBox />
+    {/* 이부분 안에 props들이 다빠졌다. 전역으로 바꿧기때문에.. */}
   </>
   );
 }

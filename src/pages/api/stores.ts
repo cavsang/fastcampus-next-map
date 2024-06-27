@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StoreType, StoreApiResponse } from "../../interface/index";
 import {PrismaClient} from '@prisma/client';
+import prisma from '@/db';
 
 interface reqQueryProp{
   page? : string;
@@ -17,7 +18,7 @@ export default async function handler(
 ) {
 
     let {page = "", limit="10", q, district}:reqQueryProp = req.query;
-    const prisma = new PrismaClient();
+    //const prisma = new PrismaClient();
 
     if(page){
       const totalCount = await prisma.store.count();

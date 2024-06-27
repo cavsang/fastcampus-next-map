@@ -68,8 +68,8 @@ export default function StoreDetailPage() {
                 </dl>
                 {isSuccess && (
                     <div className="overflow-hidden w-full mb-20 max-w-5xl mx-auto max-h-[600px]">
-                        <Map setMap={setMap} lat={store?.lat} lng={store?.lng} zoom="1"/>
-                        <Markers storeData={storeData} map={map}/>
+                        <Map lat={store?.lat} lng={store?.lng} zoom="1"/>
+                        <Markers storeData={storeData}/>
                     </div>
                 )}
             </div>
