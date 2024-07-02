@@ -1,14 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StoreType, StoreApiResponse } from "../../interface/index";
-import {PrismaClient} from '@prisma/client';
 import prisma from '@/db';
 
-interface reqQueryProp{
-  page? : string;
-  limit? : string;
-  q?:string;
-  district?:string;
+interface reqQueryProp {
+  page?: string;
+  limit?: string;
+  q?: string;
+  district?: string;
 }
 
 
@@ -17,48 +16,58 @@ export default async function handler(
   res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>,
 ) {
 
-    let {page = "", limit="10", q, district}:reqQueryProp = req.query;
-    //const prisma = new PrismaClient();
+  let { page = "", limit = "10", q, district }: reqQueryProp = req.query;
+  //const prisma = new PrismaClient();
 
-    if(page){
+  if (req.method === 'POST') { //데이터 생성
+    const data = req.body;
+    const result = await prisma.store.create({
+      data: {...data}
+    });
+
+    return res.status(200).json(result); 
+
+  } else if (req.method === 'GET') {
+    if (page) {
       const totalCount = await prisma.store.count();
-      const stores:StoreType[] = await prisma.store.findMany({
-        orderBy:{id: "asc"},
-        where:{
+      const stores: StoreType[] = await prisma.store.findMany({
+        orderBy: { id: "asc" },
+        where: {
           AND: [
             {
-              address :{
+              address: {
                 contains: district ? district : ""
               }
-            },{
-              name : {
-                contains : q ? q: ""
+            }, {
+              name: {
+                contains: q ? q : ""
               }
             }
           ]
         },
         take: parseInt(limit),
-        skip: (parseInt(page) < 1 ? 0 : (parseInt(page) -1)) * 10
+        skip: (parseInt(page) < 1 ? 0 : (parseInt(page) - 1)) * 10
       });
 
       res.status(200).json({
         data: stores,
         page: parseInt(page) < 1 ? 1 : parseInt(page),
-        totalCount :totalCount,
+        totalCount: totalCount,
         totalPage: totalCount / parseInt(limit),
         pageSize: parseInt(limit)
       });
-    }else{
+    } else {
 
-      const {id}:{id?:string}  = req.query;
+      const { id }: { id?: string } = req.query;
 
-      const stores:StoreType[] = await prisma.store.findMany(
+      const stores: StoreType[] = await prisma.store.findMany(
         {
-          orderBy:{id : 'asc'},
-          where:{
+          orderBy: { id: 'asc' },
+          where: {
             id: id ? parseInt(id) : {}
           }
         });
       res.status(200).json(id ? stores?.[0] : stores);
     }
+  }
 }

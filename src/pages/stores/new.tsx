@@ -1,13 +1,33 @@
 import {useForm} from 'react-hook-form';
 import {CATEGORY_ARR,FOOD_CERTIFY_ARR,STORE_TYPE_ARR} from '@/data/store';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function StoreNew() {
 
     const {register, handleSubmit, formState:{errors}} = useForm();
+    
+    const router = useRouter();
 
 
   return (
-    <form className="px-4 md:max-w-4xl mx-auto py-8" onSubmit={handleSubmit((data) => console.log(data))}>
+    <form className="px-4 md:max-w-4xl mx-auto py-8" onSubmit={handleSubmit( async (data) => {
+      try {
+        const result = await axios.post('/api/stores',data);
+        console.log(result);
+
+        if(result.status === 200){
+          toast.success('맛집등록');
+          router.replace(`/stores/${result?.data?.id}`);
+        }else{
+          toast.error('맛집등록 실패!');
+        }
+
+      } catch (e) {
+        toast.error(e);
+      }
+    })}>
       <div className="space-y-12">
 
         <div className="border-b border-gray-900/10 pb-12">
