@@ -21,6 +21,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  likes         Like[]
   @@map("users")
 }
 
@@ -34,6 +35,7 @@ model Store {
   category        String?   // bizcnd_code_nm
   storeType       String?   // cob_code_nm
   foodCertifyName String?   // crtfc_gbn_nm
+  likes           Like[]
 }
 
 model Account {
@@ -74,4 +76,15 @@ model VerificationToken {
  
   @@unique([identifier, token])
   @@map("verificationtokens")
+}
+
+
+model Like{
+    id          Int         @id @default(autoincrement())
+    createdAt   DateTime    @default(now())
+    storeId     Int
+    userId      Int
+    store       Store       @relation(fields:[storeId], references:[id], onDelete: Cascade)
+    user        User        @relation(fields:[userId] , references:[id], onDelete: Cascade)
+    @@index([storeId, userId])
 }

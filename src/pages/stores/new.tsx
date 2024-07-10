@@ -12,14 +12,12 @@ export default function StoreNew() {
     
     const router = useRouter();
 
-
   return (
     <form className="px-4 md:max-w-4xl mx-auto py-8" onSubmit={handleSubmit( async (data) => {
       try {
         const result = await axios.post('/api/stores',data);
-        console.log(result);
 
-        if(result.status === 200){
+        if(result.status === 201){
           toast.success('맛집등록');
           router.replace(`/stores/${result?.data?.id}`);
         }else{

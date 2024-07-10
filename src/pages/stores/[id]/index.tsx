@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Markers from '@/components/Markers';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 
 export default function StoreDetailPage() {
@@ -35,6 +36,16 @@ export default function StoreDetailPage() {
 
     const storeData:StoreType[] = [store as StoreType];
 
+    const onDelete = async () => {
+        if(window.confirm('삭제하시겠습니까??')){
+            const result = await axios.delete(`/api/stores?id=${id}`);
+            if(result.status === 200){
+                toast.success('삭제 되었습니다.');
+                router.push('/stores');
+            }
+        }
+    };
+
     return (
         <div className="max-w-5xl mx-auto px-4 py-8">
             <div className="flex justify-between items-center py-4 md:py-0">
@@ -45,7 +56,7 @@ export default function StoreDetailPage() {
                 {status === 'authenticated' && (
                     <div className="flex items-center gap-4">
                         <Link className="underline hover:text-gray-300 text-sm" href={`/stores/${store?.id}/edit`}>수정</Link>
-                        <Link className="underline hover:text-gray-300 text-sm" href="">삭제</Link>
+                        <button type="button" className="underline hover:text-gray-300 text-sm" onClick={onDelete}>삭제</button>
                     </div>
                 )}
                 

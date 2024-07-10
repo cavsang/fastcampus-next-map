@@ -19,34 +19,32 @@ export default function StoreEditPage() {
         return data as StoreType;
     }
 
-    const { data,isSuccess, isFetching, isError} = useQuery(`store-${id}`,fetchStore , {
+    const { data: store,isSuccess, isFetching, isError} = useQuery(`store-${id}`,fetchStore , {
         enabled: !!id,
-        refetchOnWindowFocus: false
-    });
-
-    useEffect(() => {
-        if(data){
-            console.log(data);
+        refetchOnWindowFocus: false,
+        onSuccess: (data) => {
             setValue('name'             , data?.name);
             setValue('category'         , data?.category);
             setValue('phone'            , data?.phone);
             setValue('address'          , data?.address);
             setValue('foodCertifyName'  , data?.foodCertifyName);
             setValue('storeType'        , data?.storeType);
+
+            setValue('id', data?.id);
         }
-    },[data])
-    
+    });
+
 
     return (
         <form className="px-4 md:max-w-4xl mx-auto py-8" onSubmit={handleSubmit(async (data) => {
             try {
-                const result = await axios.post('/api/stores', data);
+                const result = await axios.put('/api/stores', data);
 
                 if (result.status === 200) {
-                    toast.success('맛집등록');
+                    toast.success('맛집수정');
                     router.replace(`/stores/${result?.data?.id}`);
                 } else {
-                    toast.error('맛집등록 실패!');
+                    toast.error('맛집수정 실패!');
                 }
             } catch (e) {
                 toast.error(e);
