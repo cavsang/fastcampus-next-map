@@ -3,6 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { StoreType, StoreApiResponse } from "../../interface/index";
 import prisma from '@/db';
 import axios from "axios";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 interface reqQueryProp {
     page?: string;
@@ -19,6 +21,8 @@ export default async function handler(
 
     let { page = "", limit = "10", q, district }: reqQueryProp = req.query;
     //const prisma = new PrismaClient();
+
+    const session = await getServerSession(req, res, authOptions);
 
     if (req.method === 'POST') { //데이터 생성
         const formData = req.body;
@@ -92,6 +96,11 @@ export default async function handler(
                     orderBy: { id: 'asc' },
                     where: {
                         id: id ? parseInt(id) : {}
+                    },
+                    include:{
+                        likes:{
+                            where: session ? { userId : session.user.id} : {}
+                        }
                     }
                 });
             res.status(200).json(id ? stores?.[0] : stores);
@@ -103,7 +112,6 @@ export default async function handler(
                  id: parseInt(id as string)
              }
          });
-         console.log(delStore);
         res.status(200).json(delStore);
     }
 }

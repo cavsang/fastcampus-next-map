@@ -42,7 +42,7 @@ export default function StoreBox(){
                             <HiOutlineMapPin /> 
                             {store?.address}
                         </div>
-                        <Like />
+                        <Like storeId={store?.id}/>
                     </div>
                     <div className="mt-2 flex gap-2 items-center">
                         <AiOutlinePhone /> {store?.phone}
