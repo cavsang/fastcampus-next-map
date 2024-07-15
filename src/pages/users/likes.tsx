@@ -1,4 +1,5 @@
+import Likes from "@/components/Likes";
 
 export default function likes(){
-    return <h1>likes</h1>;
+    return <Likes />
 }

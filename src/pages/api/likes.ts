@@ -44,5 +44,18 @@ export default async function handler(
             });
             return res.status(201).json(result);
         } 
+    }else if(req.method === 'GET'){
+        //let { page = "", limit = "10"} = req.query;
+        const result = await prisma.store.findMany({
+            where:{
+                likes:{
+                    some:{
+                        userId: 2
+                    }
+                }
+            }
+        });
+
+        return res.status(200).json(result);
     }
 }
