@@ -1,13 +1,10 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
-import { searchState } from "@/atom";
 import axios from "axios";
 import { useInfiniteQuery } from "react-query";
 import React,{ useRef, useEffect, useCallback } from "react";
 import useintersectionObserver from "@/hooks/useIntersectionObserver";
 import Loading from "./Loading";
-import { StoreType } from "@/interface";
 import Loader from "./Loader";
 
 export default function Likes(){
@@ -27,7 +24,7 @@ export default function Likes(){
     const {data:likes, isFetching, fetchNextPage, isFetchingNextPage, hasNextPage, isLoading, isError} 
     = useInfiniteQuery('likes',fetchLikes,{
             getNextPageParam:(lastPage:any) => {
-                const page = lastPage?.data?.length > 0 ? lastPage?.page + 1 : undefined;
+                const page = lastPage?.result?.length > 0 ? lastPage?.page + 1 : undefined;
                 return page;
         },
     });
@@ -63,17 +60,18 @@ export default function Likes(){
         <div className="px-4 md:max-w-4xl mx-auto py-8">
             <ul role="list" className="divide-y divide-gray-100">{/* 밑에줄긋는 옵션 */}
 
-                {isLoading ? <Loading /> : likes?.pages?.map((page:any, index:any) => {
-                    console.log(page);
+            <div className="py-3 px-2 flex flex-col gap-2">
+                <div className="text-lg font-semibold">찜한 가게</div>
+                <div className="text-sm text-gray-600">찜한 가게 목록</div>
+            </div>
+
+                {isLoading ? <Loading /> : likes?.pages?.map((page, index) => {
                     return (
                         <React.Fragment key={index}>
 
-                            <div className="py-3 px-2 flex flex-col gap-2">
-                                <div className="text-lg font-semibold">찜한 가게</div>
-                                <div className="text-sm text-gray-600">찜한 가게 목록</div>
-                            </div>
-
-                            {page?.map((store:StoreType, i:number) => {
+                            {page?.result?.map((stores:any, i:number) => {
+                                const store = stores?.store;
+                                console.log(store);
                                 var img: string = store?.category || 'default';
                                 if (store?.category) {
                                     img = markersList.indexOf(store?.category) > -1 ? store?.category : 'default';
@@ -81,14 +79,24 @@ export default function Likes(){
 
                                 return (
                                     <li className="flex justify-between gap-x-y py-5 cursor-pointer hover:bg-gray-50" key={index} onClick={() => router.push(`/stores/${store.id}`)}>
-                                        <div className="flex gap-x-4">
+                                        <div className="flex gap-x-4 w-full">
                                             <Image src={`/images/markers/${img}.png`} width={40} height={40} alt="아이콘 이미지" />
-                                            <div>
-                                                <div className="text-sm font-semibold leading-9 text-gray-900">
-                                                    {store?.name}
+                                            <div className="w-full">
+                                                <div className="flex justify-between items-center">
+                                                    <div className="text-sm font-semibold leading-9 text-gray-900">
+                                                        {store?.name}
+                                                    </div>
+                                                    <div className="text-sm font-semibold leading-9 text-gray-900">
+                                                        {store?.address}
+                                                    </div>
                                                 </div>
-                                                <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
-                                                    {store?.name}
+                                                <div className="flex justify-between items-center">
+                                                    <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
+                                                        {store?.name}
+                                                    </div>
+                                                    <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
+                                                        {store?.phone}|{store?.foodCertifyName}|{store?.category}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

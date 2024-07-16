@@ -45,17 +45,27 @@ export default async function handler(
             return res.status(201).json(result);
         } 
     }else if(req.method === 'GET'){
-        //let { page = "", limit = "10"} = req.query;
-        const result = await prisma.store.findMany({
-            where:{
-                likes:{
-                    some:{
-                        userId: 2
-                    }
-                }
-            }
-        });
+        let { page = "", limit = "10"}:any = req.query;
 
-        return res.status(200).json(result);
+        const totalCount = await prisma.like.count();
+
+        const result = await prisma.like.findMany({
+            orderBy: { createdAt: "asc" },
+            where:{
+                userId: session?.user?.id
+            },
+            include:{
+                store: true
+            },
+            take: parseInt(limit as string),
+            skip: (parseInt(page as string) < 1 ? 0 : (parseInt(page as string) - 1)) * 10
+        });
+        return res.status(200).json({
+            result: result,
+            totalCount: totalCount,
+            totalPage: totalCount / parseInt(limit),
+            page: parseInt(page) < 1 ? 1 : parseInt(page),
+            pageSize: parseInt(limit)
+        });
     }
 }

@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
 interface LikeProps{
-    storeId: number;
+    storeId: number | undefined;
 }
 
 export default function Like({storeId}:LikeProps){
