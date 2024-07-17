@@ -20,6 +20,7 @@ export default function Navbar(){
                     <Link href="/stores" className="navbar__list--item">맛집목록</Link>
                     <Link href="/stores/new" className="navbar__list--item">맛집등록</Link>
                     <Link href="/users/likes" className="navbar__list--item">찜한가게</Link>
+                    <Link href="/users/myPage" className="navbar__list--item">마이페이지</Link>
                     {status === 'authenticated' ? 
                     <button onClick={() => signOut()}>로그아웃</button> 
                         : 
@@ -40,6 +41,7 @@ export default function Navbar(){
                         <Link href="/stores" className="navbar__list--item--mobile">맛집목록</Link>
                         <Link href="/stores/new" className="navbar__list--item--mobile">맛집등록</Link>
                         <Link href="/users/likes" className="navbar__list--item--mobile">찜한가게</Link>
+                        <Link href="/users/myPage" className="navbar__list--item--mobile">마이페이지</Link>
                         <Link href="/api/auth/signin" className="navbar__list--item--mobile">로그인</Link>
                     </div>
                 </div>

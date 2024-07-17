@@ -1,4 +1,5 @@
+import MyPage from "@/components/MyPage";
 
 export default function myPage(){
-    return <h1>myPage</h1>;
+    return <MyPage />
 }
