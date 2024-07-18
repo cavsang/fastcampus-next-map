@@ -88,3 +88,14 @@ model Like{
     user        User        @relation(fields:[userId] , references:[id], onDelete: Cascade)
     @@index([storeId, userId])
 }
+
+model Comment{
+    id          Int         @id @default(autoincrement())
+    userId      Int
+    body        String?
+    storeId     Int
+    createdAt   DateTime    @default(now())
+    store       Store       @relation(fields:[storeId], references:[id], onDelete: Cascade)
+    user        User        @relation(fields:[userId] , references:[id], onDelete: Cascade)
+    @@index([storeId, userId])
+}
