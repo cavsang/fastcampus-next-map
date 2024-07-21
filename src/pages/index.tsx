@@ -3,6 +3,7 @@ import Markers from "../components/Markers";
 import StoreBox from "../components/StoreBox";
 import { StoreType } from "../interface/index";
 import axios from 'axios';
+import CurrentLocationButton from "@/components/CurrentLocationButton";
 
 export default function Home({stores}:{stores : StoreType[]}) {
 
@@ -12,6 +13,7 @@ export default function Home({stores}:{stores : StoreType[]}) {
     <Map/>
     <Markers storeData={stores} />
     <StoreBox />
+    <CurrentLocationButton />
     {/* 이부분 안에 props들이 다빠졌다. 전역으로 바꿧기때문에.. */}
   </>
   );

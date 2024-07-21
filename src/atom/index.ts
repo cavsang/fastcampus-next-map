@@ -1,7 +1,7 @@
 import {atom} from 'recoil';
 import { LocationType, StoreType, SearchType } from '@/interface';
 
-export const mapState = atom({
+export const mapState = atom<any>({
     key: 'map',
     default: null,
     dangerouslyAllowMutability:true

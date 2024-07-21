@@ -100,14 +100,14 @@ export default function Likes(){
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="hidden sm:flex sm:flex-col sm:items-end">
+                                       {/*  <div className="hidden sm:flex sm:flex-col sm:items-end">
                                             <div className="text-sm font-semibold leading-6 text-gray-900">
                                                 {store?.address}
                                             </div>
                                             <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
                                                 {store?.phone || '번호없음'} | {store?.foodCertifyName} | {store?.category}
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </li>
                                 );
                             })}
