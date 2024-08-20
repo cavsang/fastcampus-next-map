@@ -7,7 +7,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function login(){
+export default function Login(){
 
     const {data, status} = useSession();
     const router = useRouter();

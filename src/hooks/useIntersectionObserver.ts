@@ -1,6 +1,6 @@
 import {RefObject, useState, useEffect} from 'react';
 
-function useintersectionObserver(elementRef:RefObject<Element>,{
+function UseintersectionObserver(elementRef:RefObject<Element>,{
     threshold = 0.1, root= null, rootMargin = "0%"
 }){
     const [entry, setEntry] = useState<IntersectionObserverEntry>();
@@ -25,4 +25,4 @@ function useintersectionObserver(elementRef:RefObject<Element>,{
 
     return entry;
 }
-export default useintersectionObserver;
+export default UseintersectionObserver;

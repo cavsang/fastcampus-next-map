@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useInfiniteQuery } from "react-query";
 import React,{ useRef, useEffect, useCallback } from "react";
-import useintersectionObserver from "@/hooks/useIntersectionObserver";
+import UseintersectionObserver from "@/hooks/useIntersectionObserver";
 import Loading from "./Loading";
 import Loader from "./Loader";
 
@@ -34,7 +34,7 @@ export default function Likes(){
     //console.log(likes?.pages[0]);
 
     const ref = useRef<HTMLDivElement | null>(null);//ref로 그엘레먼트를 가져옴.
-    const pageRef = useintersectionObserver(ref, {});
+    const pageRef = UseintersectionObserver(ref, {});
     
     //page의 마지막인지?
     const isPageEnd = !!pageRef?.isIntersecting;

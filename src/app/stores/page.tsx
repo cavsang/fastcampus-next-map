@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useInfiniteQuery} from 'react-query';
 import Loading from "@/components/Loading";
 import React, { useRef, useEffect, useCallback } from "react";
-import useintersectionObserver from "@/hooks/useIntersectionObserver";
+import UseintersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
 import { useRecoilValue } from "recoil";
@@ -49,7 +49,7 @@ export default function StoreListPage() {
     });
 
     const ref = useRef<HTMLDivElement | null>(null);//ref로 그엘레먼트를 가져옴.
-    const pageRef = useintersectionObserver(ref, {});
+    const pageRef = UseintersectionObserver(ref, {});
     
     //page의 마지막인지?
     const isPageEnd = !!pageRef?.isIntersecting;
