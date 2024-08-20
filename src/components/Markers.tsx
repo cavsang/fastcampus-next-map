@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useCallback } from "react";
 import { StoreType } from "../interface/index";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";

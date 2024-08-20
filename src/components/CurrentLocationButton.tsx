@@ -1,3 +1,5 @@
+'use client';
+
 import { MdOutlineMyLocation } from "react-icons/md";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";

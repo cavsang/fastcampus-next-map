@@ -1,3 +1,5 @@
+'use client';
+
 import { StoreType} from "@/interface/index";
 import Image from 'next/image';
 import axios from 'axios';
@@ -9,7 +11,7 @@ import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
 import { useRecoilValue } from "recoil";
 import { searchState } from "@/atom";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 
 export default function StoreListPage() {

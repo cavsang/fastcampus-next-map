@@ -1,3 +1,5 @@
+'use client';
+
 /* gloal kakao (이거없어도 나오는데? 이거용도는??)*/  
 import Script from '../../node_modules/next/script';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
