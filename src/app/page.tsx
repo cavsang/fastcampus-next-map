@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: 'My Page Title',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() { 
     const stores: StoreType[] = await getData();
 
